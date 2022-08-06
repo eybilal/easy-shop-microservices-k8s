@@ -8,7 +8,7 @@
         <version>2.3.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.eybilal.easyshop</groupId>
+    <groupId>io.coodle.easyshop</groupId>
     <artifactId>bom</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -21,8 +21,8 @@
         <developer>
             <name>Bilal El Yousfi</name>
             <email>eybilal@gmail.com</email>
-            <organization>eyBiLaL</organization>
-            <organizationUrl>https://www.eybilal.com</organizationUrl>
+            <organization>Coodle</organization>
+            <organizationUrl>https://www.coodle.io</organizationUrl>
         </developer>
     </developers>
     <dependencies>

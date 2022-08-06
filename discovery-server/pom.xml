@@ -8,7 +8,7 @@
 		<version>2.3.5.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.bey</groupId>
+	<groupId>io.coodle</groupId>
 	<artifactId>discovery-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>discovery-server</name>
@@ -17,7 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-		<docker.image.prefix>eybilal</docker.image.prefix>
+		<docker.image.prefix>coodle</docker.image.prefix>
 		<docker.image.name>${project.artifactId}</docker.image.name>
 	</properties>
 

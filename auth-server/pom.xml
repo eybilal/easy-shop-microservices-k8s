@@ -8,7 +8,7 @@
 		<version>2.3.5.RELEASE</version>	<!-- Recommended to use a release version -->
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.eybilal</groupId>
+	<groupId>io.coodle</groupId>
 	<artifactId>auth-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>auth-server</name>
@@ -17,7 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-		<docker.image.prefix>eybilal</docker.image.prefix>
+		<docker.image.prefix>coodle</docker.image.prefix>
 		<docker.image.name>${project.artifactId}</docker.image.name>
 		<test-plugin.version>2.22.2</test-plugin.version>
 	</properties>
