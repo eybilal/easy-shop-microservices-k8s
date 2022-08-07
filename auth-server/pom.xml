@@ -8,7 +8,7 @@
 		<version>2.3.5.RELEASE</version>	<!-- Recommended to use a release version -->
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>io.coodle</groupId>
+	<groupId>io.coodle.easyshop</groupId>
 	<artifactId>auth-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>auth-server</name>
