@@ -157,9 +157,96 @@
 
     <build>
         <plugins>
+            <!-- Spring Boot Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- Enable the packaging of layers in the Maven build process (Spring Boot Docker Layers) -->
+                <configuration>
+                    <layers>
+                        <enabled>true</enabled>
+                        <includeLayerTools>true</includeLayerTools>
+                    </layers>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin to build docker images with docker -->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.34.1</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>${docker.image.prefix}/${docker.image.name}</name>
+                            <alias>${docker.image.name}</alias>
+                            <build>
+                                <dockerFileDir>${project.basedir}</dockerFileDir>
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <tags>
+                                    <!-- NOT working because of -SNAPSHOT -->
+                                    <!-- <tag>{project.version}</tag> -->
+                                    <tag>0.0.1</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>install</phase>
+                        <!--
+                            Tells maven to run the 'docker:build' and 'docker:push' steps
+                            of fabric8 plugin on the 'install' lifecycle of maven
+                        -->
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Enforcer Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M3</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <!-- It will fail the build, if your maven version is older than 3.6.0 -->
+                                <requireMavenVersion>
+                                    <version>[3.6.0,)</version>
+                                    <message>Invalid Maven version. It should be 3.6.0 or higher</message>
+                                </requireMavenVersion>
+
+                                <!-- It will fail the build, if the java version ist not 1.8 -->
+                                <requireJavaVersion>
+                                    <version>1.8</version>
+                                </requireJavaVersion>
+
+                                <!-- I can not have any snapshot dependency in my build, when I am doing a release -->
+                                <requireReleaseDeps>
+                                    <onlyWhenRelease>true</onlyWhenRelease>
+                                    <message>Release builds must not have on snapshot dependencies</message>
+                                </requireReleaseDeps>
+
+                                <!-- Ensure there's no duplicate of dependency in the effective final POM -->
+                                <banDuplicatePomDependencyVersions/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
