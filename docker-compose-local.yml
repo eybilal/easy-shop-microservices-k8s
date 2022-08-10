@@ -85,6 +85,22 @@ services:
     networks:
       - easy-shop-backend
 
+  # auth service with spring security
+  easy-shop-auth-server:
+    image: coodle/easy-shop-auth-server
+    container_name: easy-shop-auth-server
+    ports:
+      - '8081:8081'
+    depends_on:
+      - easy-shop-discovery-server
+      - easy-shop-config-server
+      - easy-shop-zipkin
+    environment:
+      SPRING_PROFILES_ACTIVE: local-docker
+    restart: on-failure
+    networks:
+      - easy-shop-backend
+
 # Volumes
 volumes:
   easy-shop-db-data:

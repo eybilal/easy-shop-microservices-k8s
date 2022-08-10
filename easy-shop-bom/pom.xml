@@ -198,20 +198,6 @@
                         </image>
                     </images>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <phase>deploy</phase>
-                        <!--
-                            Tells maven to run the 'docker:build' and 'docker:push' steps
-                            of fabric8 plugin on the 'deploy' lifecycle of maven
-                        -->
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- Maven Enforcer Plugin -->
@@ -254,4 +240,27 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>dockerhub</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>push-to-dockerhub</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
