@@ -1,0 +1,95 @@
+version: '3'
+services:
+  #----------------------------------------------------------------------------
+  # Putting the database in a container is not a good choice for Production.
+  # It is used for development and testing phase
+  #----------------------------------------------------------------------------
+
+  # db server
+  easy-shop-db:
+    image: postgres:alpine
+    container_name: easy-shop-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - easy-shop-db-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    restart: unless-stopped # or always
+    networks:
+      - easy-shop-backend
+
+  # db client
+  easy-shop-pgadmin:
+    image: dpage/pgadmin4
+    container_name: easy-shop-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - easy-shop-pgadmin-data:/var/lib/pgadmin  
+    ports:
+      - '8000:80'
+    restart: unless-stopped # or always
+    networks:
+      - easy-shop-backend
+
+  # Distributed Tracing with Zipkin
+  easy-shop-zipkin:
+    image: openzipkin/zipkin
+    container_name: easy-shop-zipkin
+    ports:
+      - '9411:9411'
+    networks:
+      - easy-shop-backend
+
+  # discovery-server with eureka
+  easy-shop-discovery-server:
+    image: coodle/discovery-server
+    container_name: easy-shop-discovery-server
+    ports:
+      - '8761:8761'
+    restart: on-failure
+    networks:
+      - easy-shop-backend
+
+  # config server
+  easy-shop-config-server:
+    image: coodle/easy-shop-config-server
+    container_name: easy-shop-config-server
+    ports:
+      - '8888:8888'
+    environment:
+      SPRING_PROFILES_ACTIVE: local-docker
+    depends_on:
+      - easy-shop-discovery-server
+    restart: on-failure
+    networks:
+      - easy-shop-backend
+
+  # api gateway
+  easy-shop-api-gateway:
+    image: coodle/easy-shop-api-gateway
+    container_name: easy-shop-api-gateway
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_PROFILES_ACTIVE: local-docker
+    depends_on:
+      - easy-shop-discovery-server
+      - easy-shop-config-server
+      - easy-shop-zipkin
+    restart: on-failure
+    networks:
+      - easy-shop-backend
+
+# Volumes
+volumes:
+  easy-shop-db-data:
+  easy-shop-pgadmin-data:
+    
+# Networks to be used across multiple services    
+networks:
+    easy-shop-backend:

@@ -25,25 +25,18 @@ public class RoutingConfig {
                                   )
                                   .route(route -> route.path("/api/v1/customers/**")
                                       .uri("http://localhost:8085")
-                                      .id("esm-customer-service")
+                                      .id("easy-shop-customer-service")
                                   )
                                   .route(route -> route.path(
                                           "/api/v1/products/**",
                                           "/api/v1/categories/**"
                                       )
                                       .uri("http://localhost:8086")
-                                      .id("esm-inventory-service")
+                                      .id("easy-shop-inventory-service")
                                   )
                                   .route(route -> route.path("/api/v1/orders/**")
                                       .uri("http://localhost:8087")
-                                      .id("esm-order-service")
-                                  )
-                                  .route(route -> route.path(
-                                        "/api/v2/products/**",
-                                        "/api/v2/categories/**"
-                                      )
-                                      .uri("http://localhost:8091")
-                                      .id("esedm-inventory-service")
+                                      .id("easy-shop-order-service")
                                   )
                                    // TODO circuit breaker for customers microservice
 //                                    .route(route -> route.path("api/v1/customers")
@@ -62,30 +55,23 @@ public class RoutingConfig {
     RouteLocator localDockerRoutes(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
                                   .route(route -> route.path("/login")
-                                      .uri("lb://auth-server")
+                                      .uri("lb://easy-shop-auth-server")
                                       .id("login")
                                   )
                                   .route(route -> route.path("/refresh-token")
-                                      .uri("lb://auth-server")
+                                      .uri("lb://easy-shop-auth-server")
                                       .id("refresh-token")
                                   )
                                   .route(route -> route.path("/api/v1/customers/**")
-                                      .uri("lb://esm-customer-service")
-                                      .id("esm-customer-service")
+                                      .uri("lb://easy-shop-customer-service")
+                                      .id("easy-shop-customer-service")
                                   )
                                   .route(route -> route.path(
                                         "/api/v1/products/**",
                                         "/api/v1/categories/**"
                                         )
-                                      .uri("lb://esm-inventory-service")
-                                      .id("esm-inventory-service")
-                                  )
-                                  .route(route -> route.path(
-                                        "/api/v2/products/**",
-                                                 "/api/v2/categories/**"
-                                        )
-                                        .uri("lb://esedm-inventory-service")
-                                        .id("esedm-inventory-service")
+                                      .uri("lb://easy-shop-inventory-service")
+                                      .id("easy-shop-inventory-service")
                                   )
                                   .build();
     }
