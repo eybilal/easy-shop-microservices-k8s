@@ -45,6 +45,63 @@ services:
     networks:
       - easy-shop-backend
 
+  # zookeeper for a single broker
+  easy-shop-zookeeper:
+    image: confluentinc/cp-zookeeper
+    container_name: easy-shop-zookeeper
+    ports:
+      - '2181:2181'
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - easy-shop-backend
+
+  # single node broker kafka
+  easy-shop-kafka:
+    # ----------------------------------------------------------------------------------------------------------------------------------------------
+    # When a client wants to send or receive a message from Kafka, there are two types of connection that must succeed:
+    #
+    #   1- The initial connection to a broker (the bootstrap). This returns metadata to the client, including a list of all the brokers
+    #      in the cluster and their connection endpoints.
+    #      The broker details returned are defined by the advertised.listeners settings of the broker(s).
+    #
+    #   2- The client then connects to one (or more) of the brokers returned in the first step as required.
+    #      If the broker has not been configured correctly, the connections will fail.
+    #
+    # Possible scenario on Local => Kafka running on Docker network + a client running locally (from IDE)
+    # --------------------------
+    # You MUST configure a listener for Kafka communication within the Docker network and a listener for non-Docker network traffic (IDE).
+    #
+    # 1- For clients within the Docker network, use the hostname of the Docker containers.
+    #
+    # 2- For clients outside of the Docker network, use localhost.
+    #    The assumption is that the clients will connect on localhost, to a port exposed from the Docker container.
+    #
+    # ----------------------------------------------------------------------------------------------------------------------------------------------
+    image: confluentinc/cp-kafka
+    container_name: easy-shop-kafka
+    ports:
+      - '9092:9092'
+    depends_on:
+      - easy-shop-zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'easy-shop-zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT, OUTSIDE:PLAINTEXT
+      # We define two listeners: INSIDE and OUTSIDE, you can name it as you prefer.
+      # Clients within the Docker network connect using listener INSIDE, with port 9092 and hostname kafka.
+      # Clients outside of the Docker network connect using listener OUTSIDE, with port 19092 and hostname localhost.
+      # Port 19092 is exposed by the Docker container
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://easy-shop-kafka:29092, OUTSIDE://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+    networks:
+      - easy-shop-backend
+
   # discovery-server with eureka
   easy-shop-discovery-server:
     image: coodle/discovery-server
@@ -95,6 +152,18 @@ services:
       - easy-shop-discovery-server
       - easy-shop-config-server
       - easy-shop-zipkin
+    environment:
+      SPRING_PROFILES_ACTIVE: local-docker
+    restart: on-failure
+    networks:
+      - easy-shop-backend
+
+  # customer service
+  easy-shop-customer-service:
+    image: coodle/easy-shop-customer-service
+    container_name: easy-shop-customer-service
+    ports:
+      - '8085:8085'
     environment:
       SPRING_PROFILES_ACTIVE: local-docker
     restart: on-failure

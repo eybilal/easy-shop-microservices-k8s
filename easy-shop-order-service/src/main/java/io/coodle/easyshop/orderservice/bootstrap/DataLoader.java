@@ -9,7 +9,6 @@ import io.coodle.easyshop.orderservice.model.entity.Order;
 import io.coodle.easyshop.orderservice.model.entity.OrderItem;
 import io.coodle.easyshop.orderservice.model.entity.OrderLog;
 import io.coodle.easyshop.orderservice.utils.JWTConstants;
-import io.coodle.orderservice.client.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
