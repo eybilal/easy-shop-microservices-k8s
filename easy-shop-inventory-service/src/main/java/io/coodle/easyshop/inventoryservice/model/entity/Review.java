@@ -1,4 +1,4 @@
-package io.coodle.easyshop.inventoryservice.entity;
+package io.coodle.easyshop.inventoryservice.model.entity;
 
 public class Review {
     private int rating;

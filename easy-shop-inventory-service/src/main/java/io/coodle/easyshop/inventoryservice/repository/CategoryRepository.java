@@ -1,6 +1,6 @@
 package io.coodle.easyshop.inventoryservice.repository;
 
-import io.coodle.easyshop.inventoryservice.entity.Category;
+import io.coodle.easyshop.inventoryservice.model.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

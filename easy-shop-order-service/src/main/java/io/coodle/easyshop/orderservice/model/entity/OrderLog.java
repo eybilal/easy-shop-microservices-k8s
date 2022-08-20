@@ -1,7 +1,7 @@
 package io.coodle.easyshop.orderservice.model.entity;
 
 import io.coodle.easyshop.orderservice.model.pojo.BaseEntity;
-import io.coodle.easyshop.orderservice.model.pojo.OrderStatus;
+import io.coodle.easyshop.orderservice.statemachine.OrderState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 public class OrderLog extends BaseEntity {
-    private OrderStatus orderStatus;
+    private OrderState orderStatus;
     
     // To avoid a cyclic reference between Order and OrderLog, due to the following facts:
     // 1- We are using the entity directly for the REST response (and NOT the DTO)

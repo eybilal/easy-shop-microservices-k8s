@@ -1,7 +1,7 @@
-package io.coodle.easyshop.inventoryservice.entity;
+package io.coodle.easyshop.inventoryservice.model.entity;
 
 
-import io.coodle.easyshop.inventoryservice.pojo.DescriptiveEntity;
+import io.coodle.easyshop.inventoryservice.model.pojo.DescriptiveEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

@@ -2,12 +2,12 @@ package io.coodle.easyshop.orderservice.repository;
 
 import io.coodle.easyshop.orderservice.model.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Bilal El Yousfi
  */
-@RepositoryRestResource
+@Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
 }

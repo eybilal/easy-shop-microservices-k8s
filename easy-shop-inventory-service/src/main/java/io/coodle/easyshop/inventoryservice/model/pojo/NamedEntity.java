@@ -1,4 +1,4 @@
-package io.coodle.easyshop.inventoryservice.pojo;
+package io.coodle.easyshop.inventoryservice.model.pojo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

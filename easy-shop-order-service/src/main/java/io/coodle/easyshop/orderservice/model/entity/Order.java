@@ -1,7 +1,7 @@
 package io.coodle.easyshop.orderservice.model.entity;
 
 import io.coodle.easyshop.orderservice.client.Customer;
-import io.coodle.easyshop.orderservice.model.pojo.OrderStatus;
+import io.coodle.easyshop.orderservice.statemachine.OrderState;
 import io.coodle.easyshop.orderservice.model.pojo.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -22,7 +22,8 @@ import java.util.HashSet;
 public class Order extends BaseEntity {
     private String orderNumber;
 
-    private OrderStatus orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderState orderStatus;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  // Serialize Only for writing
     private Long customerId;

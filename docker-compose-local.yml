@@ -90,15 +90,28 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: 'easy-shop-zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT, OUTSIDE:PLAINTEXT
       # We define two listeners: INSIDE and OUTSIDE, you can name it as you prefer.
-      # Clients within the Docker network connect using listener INSIDE, with port 9092 and hostname kafka.
-      # Clients outside of the Docker network connect using listener OUTSIDE, with port 19092 and hostname localhost.
-      # Port 19092 is exposed by the Docker container
+      # Clients within the Docker network connect using listener INSIDE, with port 29092 and hostname easy-shop-kafka.
+      # Clients outside of Docker network connect using listener OUTSIDE, with port 9092 and hostname localhost.
+      # Port 9092 is exposed by the Docker container
       KAFKA_ADVERTISED_LISTENERS: INSIDE://easy-shop-kafka:29092, OUTSIDE://localhost:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
+    networks:
+      - easy-shop-backend
+
+  easy-shop-kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: easy-shop-kafka-ui
+    ports:
+      - '8001:8080'
+    restart: unless-stopped # or always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=easy-shop-kafka:29092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=easy-shop-zookeeper:2181
     networks:
       - easy-shop-backend
 

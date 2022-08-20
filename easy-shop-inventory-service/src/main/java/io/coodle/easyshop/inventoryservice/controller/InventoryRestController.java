@@ -1,8 +1,8 @@
 package io.coodle.easyshop.inventoryservice.controller;
 
-import io.coodle.easyshop.inventoryservice.entity.Category;
+import io.coodle.easyshop.inventoryservice.model.entity.Category;
 import io.coodle.easyshop.inventoryservice.service.InventoryService;
-import io.coodle.easyshop.inventoryservice.entity.Product;
+import io.coodle.easyshop.inventoryservice.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;

@@ -2,8 +2,8 @@ package io.coodle.easyshop.inventoryservice.service;
 
 import io.coodle.easyshop.inventoryservice.Exception.CategoryNotFoundException;
 import io.coodle.easyshop.inventoryservice.Exception.ProductNotFoundException;
-import io.coodle.easyshop.inventoryservice.entity.Category;
-import io.coodle.easyshop.inventoryservice.entity.Product;
+import io.coodle.easyshop.inventoryservice.model.entity.Category;
+import io.coodle.easyshop.inventoryservice.model.entity.Product;
 import io.coodle.easyshop.inventoryservice.repository.CategoryRepository;
 import io.coodle.easyshop.inventoryservice.repository.ProductRepository;
 import com.google.common.base.Strings;
