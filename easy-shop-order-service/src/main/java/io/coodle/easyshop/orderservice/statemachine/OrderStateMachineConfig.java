@@ -1,7 +1,6 @@
 package io.coodle.easyshop.orderservice.statemachine;
 
-import io.coodle.easyshop.orderservice.statemachine.action.AllocateOrderAction;
-import io.coodle.easyshop.orderservice.statemachine.action.ValidateOrderAction;
+import io.coodle.easyshop.orderservice.statemachine.action.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
@@ -19,7 +18,10 @@ import java.util.EnumSet;
 @RequiredArgsConstructor
 public class OrderStateMachineConfig extends StateMachineConfigurerAdapter<OrderState, OrderEvent> {
     private final ValidateOrderAction validateOrderAction;
+    private final ValidationFailedAction validationFailedAction;
     private final AllocateOrderAction allocateOrderAction;
+    private final AllocationFailedAction allocationFailedAction;
+    private final DeallocateOrderAction deallocateOrderAction;
 
     // Define States when placing an order
     @Override
@@ -47,7 +49,7 @@ public class OrderStateMachineConfig extends StateMachineConfigurerAdapter<Order
                 .and().withExternal()
                     .source(OrderState.PENDING_VALIDATION)
                     .target(OrderState.VALIDATED)
-                    .event(OrderEvent.VALIDATION_PASSED)
+                    .event(OrderEvent.VALIDATION_SUCCESS)
                 .and().withExternal()
                     .source(OrderState.PENDING_VALIDATION)
                     .target(OrderState.CANCELED)
@@ -56,7 +58,7 @@ public class OrderStateMachineConfig extends StateMachineConfigurerAdapter<Order
                     .source(OrderState.PENDING_VALIDATION)
                     .target(OrderState.VALIDATION_ERROR)
                     .event(OrderEvent.VALIDATION_FAILED)
-                    //.action(validationFailureAction)
+                    .action(validationFailedAction)
                 .and().withExternal()
                     .source(OrderState.VALIDATED)
                     .target(OrderState.PENDING_ALLOCATION)
@@ -74,7 +76,7 @@ public class OrderStateMachineConfig extends StateMachineConfigurerAdapter<Order
                     .source(OrderState.PENDING_ALLOCATION)
                     .target(OrderState.ALLOCATION_ERROR)
                     .event(OrderEvent.ALLOCATION_FAILED)
-                    //.action(allocationFailureAction)
+                    .action(allocationFailedAction)
                 .and().withExternal()
                     .source(OrderState.PENDING_ALLOCATION)
                     .target(OrderState.CANCELED)
@@ -90,7 +92,7 @@ public class OrderStateMachineConfig extends StateMachineConfigurerAdapter<Order
                 .and().withExternal()
                     .source(OrderState.ALLOCATED)
                     .target(OrderState.CANCELED)
-                    .event(OrderEvent.CANCEL);
-                    //.action(deallocateOrderAction);
+                    .event(OrderEvent.CANCEL)
+                    .action(deallocateOrderAction);
     }
 }

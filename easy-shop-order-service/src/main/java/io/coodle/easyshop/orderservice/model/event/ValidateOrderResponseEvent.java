@@ -1,4 +1,4 @@
-package io.coodle.easyshop.inventoryservice.model.dto;
+package io.coodle.easyshop.orderservice.model.event;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
-public class ValidateOrderResponseDto {
+public class ValidateOrderResponseEvent {
     private Long orderId;
     private Boolean isValid;
 }

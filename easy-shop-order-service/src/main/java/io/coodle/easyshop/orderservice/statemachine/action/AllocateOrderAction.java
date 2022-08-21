@@ -1,11 +1,10 @@
 package io.coodle.easyshop.orderservice.statemachine.action;
 
 import io.coodle.easyshop.orderservice.mapper.OrderMapper;
-import io.coodle.easyshop.orderservice.messaging.OrderProducer;
+import io.coodle.easyshop.orderservice.messaging.OrderEventProducer;
 import io.coodle.easyshop.orderservice.messaging.OrderTopics;
-import io.coodle.easyshop.orderservice.model.dto.AllocateOrderRequestDto;
+import io.coodle.easyshop.orderservice.model.event.AllocateOrderRequestEvent;
 import io.coodle.easyshop.orderservice.model.dto.OrderDto;
-import io.coodle.easyshop.orderservice.model.dto.ValidateOrderRequestDto;
 import io.coodle.easyshop.orderservice.model.entity.Order;
 import io.coodle.easyshop.orderservice.repository.OrderRepository;
 import io.coodle.easyshop.orderservice.statemachine.OrderEvent;
@@ -24,7 +23,7 @@ import java.util.Optional;
 @Slf4j
 public class AllocateOrderAction implements Action<OrderState, OrderEvent> {
     private final OrderRepository orderRepository;
-    private final OrderProducer orderProducer;
+    private final OrderEventProducer orderProducer;
     private final OrderMapper orderMapper;
 
     @Override
@@ -36,7 +35,7 @@ public class AllocateOrderAction implements Action<OrderState, OrderEvent> {
             OrderDto orderDto = orderMapper.orderToOrderDto(orderOptional.get());
 
             orderProducer.send(
-                    AllocateOrderRequestDto.builder()
+                    AllocateOrderRequestEvent.builder()
                             .orderDto(orderDto)
                             .build(),
                     OrderTopics.ALLOCATE_ORDER_REQUEST);

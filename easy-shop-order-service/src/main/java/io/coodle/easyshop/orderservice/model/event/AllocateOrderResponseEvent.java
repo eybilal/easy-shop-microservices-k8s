@@ -1,4 +1,4 @@
-package io.coodle.easyshop.orderservice.model.dto;
+package io.coodle.easyshop.orderservice.model.event;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
-public class AllocateOrderResponseDto {
+public class AllocateOrderResponseEvent {
     private Long orderId;
     private Boolean allocationError = false;
     private Boolean noInventory = false;

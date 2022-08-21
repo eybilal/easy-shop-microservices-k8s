@@ -1,7 +1,7 @@
 package io.coodle.easyshop.orderservice.messaging;
 
-import io.coodle.easyshop.orderservice.model.dto.AllocateOrderResponseDto;
-import io.coodle.easyshop.orderservice.model.dto.ValidateOrderResponseDto;
+import io.coodle.easyshop.orderservice.model.event.AllocateOrderResponseEvent;
+import io.coodle.easyshop.orderservice.model.event.ValidateOrderResponseEvent;
 import io.coodle.easyshop.orderservice.model.entity.Order;
 import io.coodle.easyshop.orderservice.repository.OrderRepository;
 import io.coodle.easyshop.orderservice.statemachine.OrderStateMachineSagaOrchestrator;
@@ -16,19 +16,19 @@ import java.util.function.Consumer;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class OrderConsumer {
+public class OrderEventConsumer {
     private final OrderStateMachineSagaOrchestrator orderStateMachineOrchestrator;
     private final OrderRepository orderRepository;
 
     @Bean
-    Consumer<ValidateOrderResponseDto> validateOrderResponseConsumer() {
-        return (validateOrderResponseDto) -> {
-            log.debug("Receiving {} from topic {}", validateOrderResponseDto, OrderTopics.VALIDATE_ORDER_RESPONSE);
+    Consumer<ValidateOrderResponseEvent> validateOrderResponseConsumer() {
+        return (validateOrderResponseEvent) -> {
+            log.debug("Receiving event {} from topic {}", validateOrderResponseEvent, OrderTopics.VALIDATE_ORDER_RESPONSE);
 
-            Optional<Order> orderOptional = orderRepository.findById(validateOrderResponseDto.getOrderId());
+            Optional<Order> orderOptional = orderRepository.findById(validateOrderResponseEvent.getOrderId());
 
             if (orderOptional.isPresent()) {
-                if (validateOrderResponseDto.getIsValid()) {
+                if (validateOrderResponseEvent.getIsValid()) {
                     orderStateMachineOrchestrator.processValidationSuccess(orderOptional.get());
 
                     orderStateMachineOrchestrator.allocate(orderOptional.get());
@@ -36,28 +36,28 @@ public class OrderConsumer {
                     orderStateMachineOrchestrator.processValidationFailed(orderOptional.get());
                 }
             } else {
-                log.error("Order Not Found. Id: {}", validateOrderResponseDto.getOrderId());
+                log.error("Order Not Found. Id: {}", validateOrderResponseEvent.getOrderId());
             }
         };
     }
 
     @Bean
-    Consumer<AllocateOrderResponseDto> allocateOrderResponseConsumer() {
-        return (allocateOrderResponseDto) -> {
-            log.debug("Receiving {} from topic {}", allocateOrderResponseDto, OrderTopics.ALLOCATE_ORDER_RESPONSE);
+    Consumer<AllocateOrderResponseEvent> allocateOrderResponseConsumer() {
+        return (allocateOrderResponseEvent) -> {
+            log.debug("Receiving event {} from topic {}", allocateOrderResponseEvent, OrderTopics.ALLOCATE_ORDER_RESPONSE);
 
-            Optional<Order> orderOptional = orderRepository.findById(allocateOrderResponseDto.getOrderId());
+            Optional<Order> orderOptional = orderRepository.findById(allocateOrderResponseEvent.getOrderId());
 
             if (orderOptional.isPresent()) {
-                if(!allocateOrderResponseDto.getAllocationError() && !allocateOrderResponseDto.getNoInventory()) {
+                if(!allocateOrderResponseEvent.getAllocationError() && !allocateOrderResponseEvent.getNoInventory()) {
                     orderStateMachineOrchestrator.processAllocationSuccess(orderOptional.get());
-                } else if(!allocateOrderResponseDto.getAllocationError() && allocateOrderResponseDto.getNoInventory()) {
+                } else if(!allocateOrderResponseEvent.getAllocationError() && allocateOrderResponseEvent.getNoInventory()) {
                     orderStateMachineOrchestrator.processAllocationNoInventory(orderOptional.get());
-                } else if(allocateOrderResponseDto.getAllocationError()) {
+                } else if(allocateOrderResponseEvent.getAllocationError()) {
                     orderStateMachineOrchestrator.processAllocationFailed(orderOptional.get());
                 }
             } else {
-                log.error("Order Not Found. Id: {}", allocateOrderResponseDto.getOrderId());
+                log.error("Order Not Found. Id: {}", allocateOrderResponseEvent.getOrderId());
             }
         };
     }

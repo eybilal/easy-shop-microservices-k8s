@@ -24,6 +24,19 @@ public class OrderStateMachineSagaOrchestratorImpl implements OrderStateMachineS
     private final StateMachineFactory<OrderState, OrderEvent> stateMachineFactory;
     private final OrderStateMachineInterceptor orderStateMachineInterceptor;
 
+    @Override
+    @Transactional
+    public Order create(Order order) {
+        order.setId(null);
+        order.setOrderStatus(OrderState.CREATED);
+
+        Order createdOrder = orderRepository.save(order);
+
+        validate(createdOrder);
+
+        return createdOrder;
+    }
+
     @Transactional
     @Override
     public void validate(Order order) {
@@ -38,7 +51,7 @@ public class OrderStateMachineSagaOrchestratorImpl implements OrderStateMachineS
         log.debug("Validation success order with id: {}", order.getId());
 
         // Send event to state machine
-        sendEvent(order, OrderEvent.VALIDATION_PASSED);
+        sendEvent(order, OrderEvent.VALIDATION_SUCCESS);
     }
 
     @Override

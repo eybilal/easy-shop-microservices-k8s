@@ -3,6 +3,7 @@ package io.coodle.easyshop.orderservice.statemachine;
 import io.coodle.easyshop.orderservice.model.entity.Order;
 
 public interface OrderStateMachineSagaOrchestrator {
+    Order create(Order order);
     void validate(Order order);
     void processValidationSuccess(Order order);
     void processValidationFailed(Order order);
@@ -15,4 +16,6 @@ public interface OrderStateMachineSagaOrchestrator {
     // void pay();
     // void processPaymentSuccess();
     // void processPaymentFailed();
+
+    // void cancel();
 }
