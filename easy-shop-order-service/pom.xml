@@ -91,14 +91,22 @@
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${mapstruct.version}</version>
 						</path>
+						<!-- If you are using Lombok 1.18.16 or newer you also need to add lombok-mapstruct-binding
+							 in order to make Lombok and MapStruct work together -->
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
+						<!-- Annotate generated mappers as Spring Components -->
 						<compilerArg>
 							-Amapstruct.defaultComponentModel=spring
 						</compilerArg>
 					</compilerArgs>
 				</configuration>
-			</plugin>
+ 			</plugin>
 		</plugins>
 	</build>
 </project>

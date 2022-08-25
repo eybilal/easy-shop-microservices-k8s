@@ -109,6 +109,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- From Spring Boot 2.3 or higher, Spring Validation was removed from spring-boot-starter-web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- Spring Cloud Discovery: Eureka Discovery Client -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

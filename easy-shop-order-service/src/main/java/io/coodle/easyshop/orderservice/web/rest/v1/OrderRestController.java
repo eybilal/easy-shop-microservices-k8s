@@ -1,12 +1,13 @@
 package io.coodle.easyshop.orderservice.web.rest.v1;
 
+import io.coodle.easyshop.orderservice.model.entity.Order;
 import io.coodle.easyshop.orderservice.repository.OrderItemRepository;
 import io.coodle.easyshop.orderservice.repository.OrderRepository;
 import io.coodle.easyshop.orderservice.client.InventoryServiceClient;
 import io.coodle.easyshop.orderservice.client.CustomerServiceClient;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,17 +22,14 @@ public class OrderRestController {
     private final CustomerServiceClient customerServiceClient;
     private final InventoryServiceClient inventoryServiceClient;
 
-    @Autowired
-    private StreamBridge streamBridge;
-
-//    @GetMapping(value = "/details/{id}")
-//    Order findOrderDetailsById(@PathVariable(name = "id") Long id) {
-//        Order order = orderRepository.findById(id).get();
-//        order.setCustomer(customerServiceClient.findUserById(order.getCustomerId()));
+    @GetMapping(value = "/details/{id}")
+    Order findOrderDetailsById(@PathVariable(name = "id") Long id) {
+        Order order = orderRepository.findById(id).get();
+        order.setCustomer(customerServiceClient.findUserById(order.getCustomerId()));
 //        order.getOrderItems().forEach(orderItem -> {
 //            orderItem.setProduct(inventoryServiceClient.findProductById(orderItem.getProductId()));
 //        });
-//
-//        return order;
-//    }
+
+        return order;
+    }
 }

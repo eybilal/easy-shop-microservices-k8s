@@ -29,19 +29,19 @@ public class DataLoader implements CommandLineRunner {
         final IdToken idToken = authServiceClient.login(usernamePassword);
         final String authorization = JWTConstants.TOKEN_PREFIX + idToken.getAccessToken();
 
-        final Customer customer1 = customerServiceClient.findUserById(
-                authorization,
-                1L
-        );
+//        final Customer customer1 = customerServiceClient.findUserById(
+//                authorization,
+//                1L
+//        );
 
         Order createdOrder1 = Order.builder()
                                    .orderNumber("2021-01-19/0000000001")
-                                   .customerId(customer1.getId())
+                                   .customerId(1L)
                                    .build();
 
         Order createdOrder2 = Order.builder()
                                    .orderNumber("2021-01-19/0000000002")
-                                   .customerId(customer1.getId())
+                                   .customerId(1L)
                                    .build();
 
 //        inventoryServiceClient.findAllProducts(authorization).forEach(product -> {
