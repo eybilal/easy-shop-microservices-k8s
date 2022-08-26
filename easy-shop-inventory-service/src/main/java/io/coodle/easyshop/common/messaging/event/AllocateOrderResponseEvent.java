@@ -1,4 +1,4 @@
-package io.coodle.easyshop.inventoryservice.model.event;
+package io.coodle.easyshop.common.messaging.event;
 
 import lombok.*;
 

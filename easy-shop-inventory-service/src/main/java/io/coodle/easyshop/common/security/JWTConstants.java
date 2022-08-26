@@ -1,4 +1,4 @@
-package io.coodle.easyshop.inventoryservice.utils;
+package io.coodle.easyshop.common.security;
 
 public class JWTConstants {
     // TODO Put those constants in application properties and inject them with @value

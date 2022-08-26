@@ -1,4 +1,4 @@
-package io.coodle.easyshop.inventoryservice.messaging;
+package io.coodle.easyshop.common.messaging;
 
 public final class OrderTopics {
     public static final String VALIDATE_ORDER_REQUEST = "validate_order_request";

@@ -1,4 +1,4 @@
-package io.coodle.easyshop.inventoryservice.model.dto;
+package io.coodle.easyshop.common.domain.dto;
 
 import lombok.*;
 

@@ -1,9 +1,9 @@
 package io.coodle.easyshop.inventoryservice.bootstrap;
 
-import io.coodle.easyshop.inventoryservice.model.entity.Category;
+import io.coodle.easyshop.inventoryservice.domain.entity.Category;
 import io.coodle.easyshop.inventoryservice.repository.CategoryRepository;
 import io.coodle.easyshop.inventoryservice.repository.ProductRepository;
-import io.coodle.easyshop.inventoryservice.model.entity.Product;
+import io.coodle.easyshop.inventoryservice.domain.entity.Product;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +26,7 @@ public class DataLoader implements CommandLineRunner {
         Category category = categoryRepository.save(
                 Category.builder()
                         .name("Health")
+                        .description("")
                         .build()
         );
 

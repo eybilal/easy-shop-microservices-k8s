@@ -1,6 +1,6 @@
-package io.coodle.easyshop.inventoryservice.model.event;
+package io.coodle.easyshop.common.messaging.event;
 
-import io.coodle.easyshop.inventoryservice.model.dto.OrderDto;
+import io.coodle.easyshop.common.domain.dto.OrderDto;
 import lombok.*;
 
 @NoArgsConstructor

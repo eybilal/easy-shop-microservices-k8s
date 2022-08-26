@@ -1,7 +1,7 @@
 package io.coodle.easyshop.inventoryservice.messaging;
 
-import io.coodle.easyshop.inventoryservice.model.event.AllocateOrderResponseEvent;
-import io.coodle.easyshop.inventoryservice.model.event.ValidateOrderResponseEvent;
+import io.coodle.easyshop.common.messaging.event.AllocateOrderResponseEvent;
+import io.coodle.easyshop.common.messaging.event.ValidateOrderResponseEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;

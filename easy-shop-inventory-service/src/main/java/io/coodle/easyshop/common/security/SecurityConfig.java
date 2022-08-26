@@ -1,6 +1,5 @@
-package io.coodle.easyshop.inventoryservice.config;
+package io.coodle.easyshop.common.security;
 
-import io.coodle.easyshop.inventoryservice.filter.JWTAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

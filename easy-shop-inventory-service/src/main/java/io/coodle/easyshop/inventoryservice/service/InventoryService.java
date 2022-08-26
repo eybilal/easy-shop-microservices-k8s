@@ -1,7 +1,7 @@
 package io.coodle.easyshop.inventoryservice.service;
 
-import io.coodle.easyshop.inventoryservice.model.entity.Category;
-import io.coodle.easyshop.inventoryservice.model.entity.Product;
+import io.coodle.easyshop.inventoryservice.domain.entity.Category;
+import io.coodle.easyshop.inventoryservice.domain.entity.Product;
 
 import java.util.Collection;
 

@@ -1,8 +1,8 @@
 package io.coodle.easyshop.inventoryservice.controller;
 
-import io.coodle.easyshop.inventoryservice.model.entity.Category;
+import io.coodle.easyshop.inventoryservice.domain.entity.Category;
 import io.coodle.easyshop.inventoryservice.service.InventoryService;
-import io.coodle.easyshop.inventoryservice.model.entity.Product;
+import io.coodle.easyshop.inventoryservice.domain.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +22,7 @@ public class InventoryRestController {
     @GetMapping("/categories")
     @ResponseStatus(HttpStatus.OK)
     public Collection<Category> findAllCategories(
-            @RequestParam(required = false) String name
+            @RequestParam(value = "name", required = false) String name
     ) {
         return inventoryService.findAllCategories(name);
     }

@@ -1,11 +1,11 @@
-package io.coodle.easyshop.inventoryservice.model.entity;
+package io.coodle.easyshop.inventoryservice.domain.entity;
 
-import io.coodle.easyshop.inventoryservice.model.pojo.DescriptiveEntity;
+import io.coodle.easyshop.common.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 
 @Entity
@@ -15,8 +15,15 @@ import java.util.Collection;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
-public class Category extends DescriptiveEntity {
+@Builder
+public class Category extends BaseEntity {
+    @Column(name = "name")
+    @NotEmpty
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
     // To avoid a cyclic reference between Category and Product, due to the following facts:
     // 1- We are serializing the entity to JSON for the REST response (and NOT the DTO)
     // 2- We have a bidirectional relation between Category and Product

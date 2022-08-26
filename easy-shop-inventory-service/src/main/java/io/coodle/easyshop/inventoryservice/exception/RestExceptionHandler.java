@@ -1,4 +1,4 @@
-package io.coodle.easyshop.inventoryservice.Exception;
+package io.coodle.easyshop.inventoryservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
