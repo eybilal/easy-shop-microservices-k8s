@@ -1,12 +1,10 @@
 package io.coodle.easyshop.inventoryservice.service;
 
-import io.coodle.easyshop.inventoryservice.exception.CategoryNotFoundException;
-import io.coodle.easyshop.inventoryservice.exception.ProductNotFoundException;
+import com.google.common.base.Strings;
 import io.coodle.easyshop.inventoryservice.domain.entity.Category;
 import io.coodle.easyshop.inventoryservice.domain.entity.Product;
+import io.coodle.easyshop.inventoryservice.exception.CategoryNotFoundException;
 import io.coodle.easyshop.inventoryservice.repository.CategoryRepository;
-import io.coodle.easyshop.inventoryservice.repository.ProductRepository;
-import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -21,9 +19,8 @@ import java.util.Collection;
  */
 @Transactional
 @RequiredArgsConstructor
-public class InventoryServiceImpl implements InventoryService {
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
-    private final ProductRepository productRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -57,33 +54,5 @@ public class InventoryServiceImpl implements InventoryService {
         BeanUtils.copyProperties(category, existingCategory, "id");
 
         return categoryRepository.save(existingCategory);
-    }
-
-    @Override
-    public Product findProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-    }
-
-    @Override
-    public Collection<Product> findAllProducts(String name) {
-        if (!Strings.isNullOrEmpty(name)) {
-            return productRepository.findByName(name);
-        }
-
-        return productRepository.findAll();
-    }
-
-    @Override
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    @Override
-    public Product updateProduct(Long id, Product product) {
-        Product existingProduct = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-
-        BeanUtils.copyProperties(product, existingProduct, "id");
-
-        return productRepository.save(existingProduct);
     }
 }
