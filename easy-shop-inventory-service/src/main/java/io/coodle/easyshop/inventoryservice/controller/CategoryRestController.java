@@ -10,10 +10,10 @@ import io.coodle.easyshop.inventoryservice.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +56,7 @@ public class CategoryRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createCategory(@RequestBody @Validated CategoryRequestDto categoryRequestDto) {
+    public ResponseEntity<Void> createCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto) {
         Category createdCategory = categoryService.createCategory(categoryMapper.categoryRequestDtoToCategory(categoryRequestDto));
 
         return ResponseEntity
@@ -69,7 +69,7 @@ public class CategoryRestController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> updateCategory(@PathVariable Long id, @RequestBody @Validated CategoryRequestDto categoryRequestDto) {
+    public ResponseEntity<Void> updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryRequestDto categoryRequestDto) {
         categoryService.updateCategory(id, categoryMapper.categoryRequestDtoToCategory(categoryRequestDto));
 
         return ResponseEntity.noContent().build();

@@ -10,10 +10,10 @@ import io.coodle.easyshop.inventoryservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +47,7 @@ public class ProductRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody @Validated ProductRequestDto productRequestDto) {
+    public ResponseEntity<Void> createProduct(@RequestBody @Valid ProductRequestDto productRequestDto) {
         Category category = categoryService.findCategoryById(productRequestDto.getCategoryId());
 
         Product p = productMapper.productRequestDtoToProduct(productRequestDto);
@@ -65,7 +65,7 @@ public class ProductRestController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody @Validated ProductRequestDto productRequestDto) {
+    public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto productRequestDto) {
         productService.updateProduct(id, productMapper.productRequestDtoToProduct(productRequestDto));
 
         return ResponseEntity.noContent().build();

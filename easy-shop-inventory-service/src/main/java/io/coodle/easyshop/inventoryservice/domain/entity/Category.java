@@ -1,11 +1,11 @@
 package io.coodle.easyshop.inventoryservice.domain.entity;
 
 import io.coodle.easyshop.common.domain.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Entity
@@ -18,23 +18,30 @@ import java.util.Collection;
 @Builder
 public class Category extends BaseEntity {
     @Column(name = "name")
-    @NotEmpty
+    @NotBlank
     private String name;
 
     @Column(name = "description")
+    @NotNull
     private String description;
 
-    // To avoid a cyclic reference between Category and Product, due to the following facts:
-    // 1- We are serializing the entity to JSON for the REST response (and NOT the DTO)
-    // 2- We have a bidirectional relation between Category and Product
-    // Category Entity: we ignore serializing products for Reading (GET operations)
-    // Product Entity: we serialize Category entity
+    // Important:
+    // ----------
+    // In case, you have this use case:
+    // 1- You are serializing the entity to JSON for the REST response (and NOT using the DTO)
+    // 2- You have a bidirectional relation between entities, such as Category and Product
+    //
+    // To avoid a cyclic reference between Category and Product, use this technique:
+    //
+    // Category Entity: ignore serializing products for Reading (GET operations):
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  // Serialize Only for writing
+    //
+    // Product Entity: serialize Category entity
+    //
     @OneToMany(
             mappedBy="category",
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  // Serialize Only for writing
     private Collection<Product> products;
-
 }
