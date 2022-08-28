@@ -1,6 +1,6 @@
-package io.coodle.easyshop.common.domain.dto;
+package io.coodle.easyshop.common.domain.dto.response;
 
-import io.coodle.easyshop.inventoryservice.domain.entity.Category;
+import io.coodle.easyshop.common.domain.dto.response.CategoryResponseDto;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 @Builder
-public class ProductDto {
+public class ProductResponseDto {
     private Long id;
 
     private String name;
@@ -22,7 +22,5 @@ public class ProductDto {
 
     private Integer quantity;
 
-    // private Long categoryId;
-
-    private Category category;
+    private CategoryResponseDto category;
 }

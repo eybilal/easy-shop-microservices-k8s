@@ -1,7 +1,8 @@
 package io.coodle.easyshop.inventoryservice.controller;
 
-import io.coodle.easyshop.common.domain.dto.CategoryDto;
-import io.coodle.easyshop.common.domain.dto.ProductDto;
+import io.coodle.easyshop.common.domain.dto.request.CategoryRequestDto;
+import io.coodle.easyshop.common.domain.dto.response.CategoryResponseDto;
+import io.coodle.easyshop.common.domain.dto.response.ProductResponseDto;
 import io.coodle.easyshop.inventoryservice.domain.entity.Category;
 import io.coodle.easyshop.inventoryservice.mapper.CategoryMapper;
 import io.coodle.easyshop.inventoryservice.mapper.ProductMapper;
@@ -13,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,35 +29,35 @@ public class CategoryRestController {
     private final ProductMapper productMapper;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> findAllCategories(
+    public ResponseEntity<List<CategoryResponseDto>> findAllCategories(
         @RequestParam(value = "name", required = false) String name
     ) {
-        List<CategoryDto> categories = categoryService.findAllCategories(name)
+        List<CategoryResponseDto> categories = categoryService.findAllCategories(name)
                                             .stream()
-                                            .map(categoryMapper::categoryToCategoryDto)
+                                            .map(categoryMapper::categoryToCategoryResponseDto)
                                             .collect(Collectors.toList());
 
         return ResponseEntity.ok(categories);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CategoryDto> findCategoryById(@PathVariable Long id) {
-        return ResponseEntity.ok(categoryMapper.categoryToCategoryDto(categoryService.findCategoryById(id)));
+    public ResponseEntity<CategoryResponseDto> findCategoryById(@PathVariable Long id) {
+        return ResponseEntity.ok(categoryMapper.categoryToCategoryResponseDto(categoryService.findCategoryById(id)));
     }
 
     @GetMapping(path = "/{id}/products")
-    public ResponseEntity<Collection<ProductDto>> findCategoryProductsById(@PathVariable Long id) {
-        List<ProductDto> products = categoryService.findCategoryProductsById(id)
+    public ResponseEntity<List<ProductResponseDto>> findCategoryProductsById(@PathVariable Long id) {
+        List<ProductResponseDto> products = categoryService.findCategoryProductsById(id)
                                         .stream()
-                                        .map(productMapper::productToProductDto)
+                                        .map(productMapper::productToProductResponseDto)
                                         .collect(Collectors.toList());
 
         return ResponseEntity.ok(products);
     }
 
     @PostMapping
-    public ResponseEntity<Void> createCategory(@RequestBody @Validated Category category) {
-        Category createdCategory = categoryService.createCategory(category);
+    public ResponseEntity<Void> createCategory(@RequestBody @Validated CategoryRequestDto categoryRequestDto) {
+        Category createdCategory = categoryService.createCategory(categoryMapper.categoryRequestDtoToCategory(categoryRequestDto));
 
         return ResponseEntity
                 .created(UriComponentsBuilder
@@ -69,8 +69,8 @@ public class CategoryRestController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Void> updateCategory(@PathVariable Long id, @RequestBody @Validated Category category) {
-        categoryService.updateCategory(id, category);
+    public ResponseEntity<Void> updateCategory(@PathVariable Long id, @RequestBody @Validated CategoryRequestDto categoryRequestDto) {
+        categoryService.updateCategory(id, categoryMapper.categoryRequestDtoToCategory(categoryRequestDto));
 
         return ResponseEntity.noContent().build();
     }

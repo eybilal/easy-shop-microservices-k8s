@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class RestExceptionHandler {
+public class InventoryRestExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         final List<String> errors = new ArrayList<>();

@@ -1,4 +1,4 @@
-package io.coodle.easyshop.common.domain.dto;
+package io.coodle.easyshop.common.domain.dto.response;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
-public class CategoryDto {
+public class CategoryResponseDto {
     private Long id;
 
     private String name;

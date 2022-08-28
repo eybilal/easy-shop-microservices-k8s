@@ -1,12 +1,13 @@
 package io.coodle.easyshop.inventoryservice.mapper;
 
-import io.coodle.easyshop.common.domain.dto.ProductDto;
+import io.coodle.easyshop.common.domain.dto.request.ProductRequestDto;
+import io.coodle.easyshop.common.domain.dto.response.ProductResponseDto;
 import io.coodle.easyshop.inventoryservice.domain.entity.Product;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(uses = CategoryMapper.class)
 public interface ProductMapper {
-    ProductDto productToProductDto(Product product);
+    ProductResponseDto productToProductResponseDto(Product product);
 
-    Product productDtoToProduct(ProductDto productDto);
+    Product productRequestDtoToProduct(ProductRequestDto productRequestDto);
 }
