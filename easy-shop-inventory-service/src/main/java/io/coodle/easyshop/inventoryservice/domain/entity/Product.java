@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "product")
@@ -23,11 +24,12 @@ public class Product extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    private double price;
+    private BigDecimal price;
 
-    private int quantity;
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
 }
