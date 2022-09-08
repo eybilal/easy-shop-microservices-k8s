@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easy-shop-db-deployment
+spec:
+  replicas: 1
+  # How to find the created pod
+  selector:
+    matchLabels:
+      component: easy-shop-db
+  template:
+    metadata:
+      # labels of created pod
+      labels:
+        # we can name whatever we want for labels
+        component: easy-shop-db
+    spec:
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: db-persistent-volum-claim
+      containers:
+        - name: easy-shop-db
+          image: postgres:alpine
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+              - name: db-storage
+                mountPath: /var/lib/postgresql/data
+                subPath: db
+          env:
+            - name: POSTGRES_USER
+              value: coodle
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:  # created as a secret by command line
+                  name: easy-shop-db-password
+                  key: EASY_SHOP_DB_PASSWORD

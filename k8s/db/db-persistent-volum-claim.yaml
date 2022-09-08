@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-persistent-volum-claim
+spec:
+  # Tells Kubernetes to find a storage instance that has accessMode ReadWriteOnce and 2 GB of storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

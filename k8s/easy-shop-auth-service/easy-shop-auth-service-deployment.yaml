@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easy-shop-auth-service-deployment
+spec:
+  replicas: 1
+  # How to find the created pod
+  selector:
+    matchLabels:
+      component: easy-shop-auth-service
+  template:
+    metadata:
+      # labels of created pod
+      labels:
+        # we can name whatever we want for labels
+        component: easy-shop-auth-service
+    spec:
+      containers:
+        - name: easy-shop-auth-service
+          image: coodle/easy-shop-auth-service
+          ports:
+            - containerPort: 8081
