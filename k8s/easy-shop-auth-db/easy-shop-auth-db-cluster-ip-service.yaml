@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: easy-shop-db-cluster-ip-service
+  name: easy-shop-auth-db-cluster-ip-service
 spec:
   type: ClusterIP
   selector:
-    component: easy-shop-db-service
+    app: easy-shop-auth-db
   ports:
     - port: 5432
       targetPort: 5432

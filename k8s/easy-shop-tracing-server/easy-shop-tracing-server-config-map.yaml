@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: easy-shop-tracing-server-config-map
+data:
+  tracing-server-host: easy-shop-tracing-server-deployment
+  tracing-server-port: '9411'

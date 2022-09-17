@@ -11,10 +11,10 @@
     </parent>
 
     <groupId>io.coodle.easyshop</groupId>
-    <artifactId>easy-shop-bom</artifactId>
+    <artifactId>easy-shop-bom-k8s</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>easy-shop-bom</name>
+    <name>easy-shop-bom-k8s</name>
     <description>bom - common dependencies for easy-shop-microservices</description>
 
     <properties>
@@ -27,7 +27,7 @@
         <guava.version>30.1-jre</guava.version>
         <java-jwt.version>3.11.0</java-jwt.version>
         <docker.image.prefix>coodle</docker.image.prefix>
-        <docker.image.name>${project.artifactId}</docker.image.name>
+        <docker.image.name>${project.artifactId}-k8s</docker.image.name>
     </properties>
 
     <developers>
@@ -114,18 +114,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation
             </artifactId>
-        </dependency>
-
-        <!-- Spring Cloud Discovery: Eureka Discovery Client -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
-        <!-- Spring Cloud Config: Config Client -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
 
         <!-- Distributed Tracing: Zipkin Client and Spring Cloud Sleuth -->

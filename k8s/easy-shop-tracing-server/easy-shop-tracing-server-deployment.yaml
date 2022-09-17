@@ -1,22 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: easy-shop-zipkin-deployment
+  name: easy-shop-tracing-server-deployment
 spec:
   replicas: 1
   # How to find the created pod
   selector:
     matchLabels:
-      component: easy-shop-zipkin
+      app: easy-shop-tracing-server
   template:
     metadata:
       # labels of created pod
       labels:
         # we can name whatever we want for labels
-        component: easy-shop-zipkin
+        app: easy-shop-tracing-server
     spec:
       containers:
-        - name: easy-shop-zipkin
+        - name: easy-shop-tracing-server
           image: openzipkin/zipkin
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9411
