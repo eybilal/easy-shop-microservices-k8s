@@ -3,7 +3,5 @@ kind: ConfigMap
 metadata:
   name: easy-shop-auth-db-config-map
 data:
-  db-host: easy-shop-auth-db-cluster-ip-service
   db-name: auth-db
-  db-port: '5432'
   db-user: coodle

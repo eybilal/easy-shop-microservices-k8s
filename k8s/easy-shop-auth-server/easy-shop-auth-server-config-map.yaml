@@ -8,10 +8,11 @@ data:
       datasource:
         url: jdbc:postgresql://easy-shop-auth-db-cluster-ip-service:5432/auth-db
         username: coodle
-        password: 'c00dl3'
-        driverClassName: org.postgresql.Driver
+        password: c00dl3
+        driver-class-name: org.postgresql.Driver
       #-------------------------- ZipKin -------------------------------
       zipkin:
+        base-url: http://easy-shop-tracing-server-cluster-ip-service:9411/
         sender:
           # Ways of sending information (spans) to Zipkin (web=send spans over http)
           type: web  
@@ -27,13 +28,13 @@ data:
           hibernate:
             # Allow Hibernate to generate SQL optimized for a particular DBMS
             dialect: org.hibernate.dialect.PostgreSQL10Dialect
-      hibernate:
-        # Hibernate ddl auto (create, create-drop, update)
-        ddl-auto: create-drop
-        # Naming strategy
-        #naming:
-          #implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
-          #physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        hibernate:
+          # Hibernate ddl auto (create, create-drop, update)
+          ddl-auto: create-drop
+          # Naming strategy
+          #naming:
+            #implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+            #physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     #------------------------- Logging -------------------------
     logging:
       level:
