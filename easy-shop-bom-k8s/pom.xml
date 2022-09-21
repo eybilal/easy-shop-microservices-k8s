@@ -226,6 +226,8 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.34.1</version>
                 <configuration>
+                    <!-- Config needed for docker-desktop context (I am using Docker Desktop on Linux) -->
+                    <dockerHost>unix:///home/bilal/.docker/desktop/docker.sock</dockerHost>
                     <verbose>true</verbose>
                     <images>
                         <image>

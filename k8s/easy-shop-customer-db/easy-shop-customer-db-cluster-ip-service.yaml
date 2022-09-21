@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: easy-shop-customer-db-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    app: easy-shop-customer-db
+  ports:
+    - port: 5432
+      targetPort: 5432

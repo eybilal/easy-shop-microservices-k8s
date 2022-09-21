@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easy-shop-customer-service-deployment
+spec:
+  replicas: 1
+  # How to find the created pod
+  selector:
+    matchLabels:
+      component: easy-shop-customer-service
+  template:
+    metadata:
+      # labels of created pod
+      labels:
+        # we can name whatever we want for labels
+        component: easy-shop-customer-service
+    spec:
+      containers:
+        - name: easy-shop-customer-service
+          image: coodle/easy-shop-customer-service-k8s
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            # By default, Spring Boot reads properties from the files located in the current directory
+            # or in the /config subdirectory of the current directory
+            # easy-shop-customer-service current directory is '/app', see Dockerfile
+            - mountPath: /app/config
+              name: easy-shop-customer-service-volume
+      volumes:
+        - name: easy-shop-customer-service-volume
+          configMap:
+            name: easy-shop-customer-service-config-map

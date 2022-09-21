@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: easy-shop-customer-db-config-map
+data:
+  db-name: customer-db
+  db-user: coodle
