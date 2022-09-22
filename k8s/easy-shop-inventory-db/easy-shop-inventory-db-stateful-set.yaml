@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: easy-shop-inventory-db-stateful-set
+spec:
+  serviceName: easy-shop-inventory-db-stateful-set
+  replicas: 1
+  # How to find the created pod
+  selector:
+    matchLabels:
+      app: easy-shop-inventory-db
+  template:
+    metadata:
+      # labels of created pod
+      labels:
+        # we can name whatever we want for labels
+        app: easy-shop-inventory-db
+    spec:
+      volumes:
+        - name: easy-shop-inventory-db-storage
+          persistentVolumeClaim:
+            claimName: easy-shop-inventory-db-persistent-volum-claim
+      containers:
+        - name: easy-shop-inventory-db
+          image: postgres:alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+              - name: easy-shop-inventory-db-storage
+                mountPath: /var/lib/postgresql/data   # container path defined by postgres:alpine image
+                # subPath: db
+          env:
+            # Pull environment variables from ConfigMap
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-inventory-db-config-map
+                  key: db-name
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-inventory-db-config-map
+                  key: db-user
+            # Pull password from Secrets
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: easy-shop-db-passwords
+                  key: inventory-db

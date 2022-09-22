@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easy-shop-zookeeper-deployment
+spec:
+  replicas: 1
+  # How to find the created pod
+  selector:
+    matchLabels:
+      component: easy-shop-zookeeper
+  template:
+    metadata:
+      # labels of created pod
+      labels:
+        # we can name whatever we want for labels
+        component: easy-shop-zookeeper
+    spec:
+      containers:
+        - name: easy-shop-zookeeper
+          image: confluentinc/cp-zookeeper
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 2181
+          env:
+            # Pull environment variables from ConfigMap
+            - name: ZOOKEEPER_CLIENT_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-zookeeper-config-map
+                  key: zookeeper-client-port
+            - name: ZOOKEEPER_TICK_TIME
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-zookeeper-config-map
+                  key: zookeeper-tick-time

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easy-shop-kafka-deployment
+spec:
+  replicas: 1
+  # How to find the created pod
+  selector:
+    matchLabels:
+      component: easy-shop-kafka
+  template:
+    metadata:
+      # labels of created pod
+      labels:
+        # we can name whatever we want for labels
+        component: easy-shop-kafka
+    spec:
+      containers:
+        - name: easy-shop-kafka
+          image: confluentinc/cp-kafka
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9092
+          env:
+            # Pull environment variables from ConfigMap
+            - name: KAFKA_BROKER_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-kafka-config-map
+                  key: kafka-broker-id
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-kafka-config-map
+                  key: kafka-zookeeper-connect
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-kafka-config-map
+                  key: kafka-listener-security-protocol-map
+            - name: KAFKA_ADVERTISED_LISTENERS
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-kafka-config-map
+                  key: kafka-advertised-listeners
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-kafka-config-map
+                  key: kafka-inter-broker-listener-name
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-kafka-config-map
+                  key: kafka-offsets-topic-replication-factor
+            - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-kafka-config-map
+                  key: kafka-transaction-state-log-min-isr
+            - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+              valueFrom:
+                configMapKeyRef:
+                  name: easy-shop-kafka-config-map
+                  key: kafka-transaction-state-log-replication-factor

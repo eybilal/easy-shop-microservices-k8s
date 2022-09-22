@@ -1,0 +1,12 @@
+# Define a PVC for Postgres Storage, dynamically provisioned by cluster
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: easy-shop-inventory-db-persistent-volum-claim
+spec:
+  # Tells Kubernetes to find a storage instance that has accessMode ReadWriteOnce and 1 GB of storage
+  accessModes:
+    - ReadWriteOnce   # can be read and written by a single node (use case in locally in Minikube)
+  resources:
+    requests:
+      storage: 1Gi

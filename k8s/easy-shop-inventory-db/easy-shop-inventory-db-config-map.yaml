@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: easy-shop-inventory-db-config-map
+data:
+  db-name: inventory-db
+  db-user: coodle

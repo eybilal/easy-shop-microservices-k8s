@@ -32,19 +32,6 @@ import org.springframework.context.annotation.Import;
 // ----------
 // Since we only need one class to be scanned on start up, we will use @Import annotation
 @Import(SecurityConfig.class)
-
-/**
- * @EnableDiscoveryClient vs @EnableEurekaClient ?
- *
- * There are multiple implementations of "Discovery Service" (eureka, consul, zookeeper).
- *
- * @EnableDiscoveryClient lives in spring-cloud-commons and picks the implementation on the classpath.
- *
- * @EnableEurekaClient lives in spring-cloud-netflix and only works for eureka.
- *
- * If eureka is on your classpath, they are effectively the same.
- */
-@EnableDiscoveryClient
 public class EasyShopInventoryServiceApplication {
 
 	public static void main(String[] args) {
