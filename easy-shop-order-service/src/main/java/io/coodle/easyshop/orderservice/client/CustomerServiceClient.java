@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
     name = "customer-service",
-    url = "http://localhost:8080/api/v1/customers",
+    url = "${easy-shop-clients.customer.url}/api/v1/customers",
     configuration = FeignClientConfig.class
 )
 public interface CustomerServiceClient {

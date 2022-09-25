@@ -1,0 +1,31 @@
+# Version of the configuration.
+apiVersion: skaffold/v2beta29 latest
+# Always Config
+kind: Config
+# Describes how images are built
+build:
+  # Images you're going to be building
+  artifacts:
+    - image:
+      # Directory containing the artifact's sources
+      # context: .
+      context: easy-shop-order-service
+      # Describes an artifact built from a Dockerfile
+      docker:
+        # Locates the Dockerfile relative to workspace
+        dockerfile: Dockerfile
+      # inject updated files into the easy-shop-order-service pod, relay on
+      # app to automatically update itself
+      #----------------------------------------------------------------------------------------------------------------
+      # Local files synced to pods instead of triggering an image build when modified.
+      # If no files are listed, sync all the files and infer the destination.
+      sync:
+
+
+  # Describes how to do a build on the local docker daemon
+  # and optionally push to a repository.
+  local:
+    # should images be pushed to a registry.
+    # If not specified, images are pushed only
+    # if the current Kubernetes context connects to a remote cluster.
+    push: false
