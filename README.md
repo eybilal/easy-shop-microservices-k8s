@@ -11,6 +11,10 @@ Rules:
   
 Ingress:
 - We will be using ingress-nginx as the Ingress Controller.
+- Installation with YAML manifest:
+`kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.1/deploy/static/provider/cloud/deploy.yaml`
+- Check installation:
+`kubectl get pods --namespace=ingress-nginx`
 
 Notes:
 - Run the following to add the database passwords as secrets:

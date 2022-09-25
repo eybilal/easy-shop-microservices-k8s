@@ -20,7 +20,7 @@ spec:
           image: coodle/easy-shop-customer-service-k8s
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8081
+            - containerPort: 8085
           volumeMounts:
             # By default, Spring Boot reads properties from the files located in the current directory
             # or in the /config subdirectory of the current directory

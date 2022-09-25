@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: easy-shop-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          # Routing for Backend
+          # auth-service (/login, /refresh-token)
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: easy-shop-auth-server-cluster-ip-service
+                port:
+                  number: 8081
+          - path: /api/v1/customers
+            pathType: Prefix
+            backend:
+              service:
+                name: easy-shop-customer-service-cluster-ip-service
+                port:
+                  number: 8085
+          - path: /api/v1/products
+            pathType: Prefix
+            backend:
+              service:
+                name: easy-shop-inventory-service-cluster-ip-service
+                port:
+                  number: 8086
+          - path: /api/v1/categories
+            pathType: Prefix
+            backend:
+              service:
+                name: easy-shop-inventory-service-cluster-ip-service
+                port:
+                  number: 8086
