@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
     name = "auth-service",
-    url = "${easy-shop-clients.auth.url}"
+    url = "easy-shop-auth-server-cluster-ip-service:8081"
 )
 public interface AuthServiceClient {
     @PostMapping(value = "/login")

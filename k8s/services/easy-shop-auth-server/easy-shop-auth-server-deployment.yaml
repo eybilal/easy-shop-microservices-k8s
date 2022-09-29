@@ -25,9 +25,19 @@ spec:
             # By default, Spring Boot reads properties from the files located in the current directory
             # or in the /config subdirectory of the current directory
             # easy-shop-auth-server current directory is '/app', see Dockerfile
-            - mountPath: /app/config
+            - mountPath: /app/classes/config
               name: easy-shop-auth-server-volume
       volumes:
         - name: easy-shop-auth-server-volume
           configMap:
             name: easy-shop-auth-server-config-map
+      # Once both init containers complete, the Deployment runs the app container from its spec section
+      initContainers:
+        - name: init-easy-shop-auth-db
+          image: coodle/easy-shop-auth-server-k8s
+          # Run a command in a shell
+          command: ['sh', '-c', 'until getent hosts easy-shop-auth-db-cluster-ip-service; do echo waiting for easy-shop-auth-db; sleep 2; done']
+        - name: init-easy-shop-tracing-server
+          image: coodle/easy-shop-auth-server-k8s
+          # Run a command in a shell
+          command: [ 'sh', '-c', 'until getent hosts easy-shop-tracing-server-cluster-ip-service; do echo waiting for easy-shop-tracing-server; sleep 2; done']

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: easy-shop-order-db-config-map
+data:
+  db-name: order-db
+  db-user: coodle

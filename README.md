@@ -16,6 +16,16 @@ Ingress:
 - Check installation:
 `kubectl get pods --namespace=ingress-nginx`
 
+Manual Deploy:
+`kubectl apply -f k8s/ --recursive`
+
+Skaffold:
+- Use skaffold dev to build and deploy your app every time your code changes.
+- Use skaffold run to build and deploy your app once, similar to a CI/CD pipeline.
+- You can activate profiles with the -p (--profile) parameter in the skaffold dev and skaffold run commands.
+- Local Development: `skaffold dev -p local`
+
+
 Notes:
 - Run the following to add the database passwords as secrets:
 `kubectl create secret generic easy-shop-db-passwords 

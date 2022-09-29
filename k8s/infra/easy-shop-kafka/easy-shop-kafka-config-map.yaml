@@ -6,7 +6,7 @@ data:
   kafka-broker-id: '1'
   kafka-zookeeper-connect: easy-shop-zookeeper-cluster-ip-service:2181
   kafka-listener-security-protocol-map: INSIDE:PLAINTEXT, OUTSIDE:PLAINTEXT
-  kafka-advertised-listeners: INSIDE://easy-shop-kafka-cluster-ip-service:29092, OUTSIDE://localhost:9092
+  kafka-advertised-listeners: INSIDE://localhost:29092, OUTSIDE://easy-shop-kafka-cluster-ip-service:9092
   kafka-inter-broker-listener-name: INSIDE
   kafka-offsets-topic-replication-factor: '1'
   kafka-transaction-state-log-min-isr: '1'

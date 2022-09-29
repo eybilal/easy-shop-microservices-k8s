@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easy-shop-order-service-deployment
+spec:
+  replicas: 1
+  # How to find the created pod
+  selector:
+    matchLabels:
+      component: easy-shop-order-service
+  template:
+    metadata:
+      # labels of created pod
+      labels:
+        # we can name whatever we want for labels
+        component: easy-shop-order-service
+    spec:
+      containers:
+        - name: easy-shop-order-service
+          image: coodle/easy-shop-order-service-k8s
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8086
+          volumeMounts:
+            # By default, Spring Boot reads properties from the files located in the current directory
+            # or in the /config subdirectory of the current directory
+            # Jib write out classes files to '/app/classes'
+            - mountPath: /app/classes/config
+              name: easy-shop-order-service-volume
+      volumes:
+        - name: easy-shop-order-service-volume
+          configMap:
+            name: easy-shop-order-service-config-map
+      # Once both init containers complete, the Deployment runs the app container from its spec section
+      initContainers:
+        - name: init-easy-shop-order-db
+          image: coodle/easy-shop-order-service-k8s
+          # Run a command in a shell
+          command: ['sh', '-c', 'until getent hosts easy-shop-order-db-cluster-ip-service; do echo waiting for easy-shop-order-db; sleep 2; done']
+        - name: init-easy-shop-tracing-server
+          image: coodle/easy-shop-order-service-k8s
+          # Run a command in a shell
+          command: ['sh', '-c', 'until getent hosts easy-shop-tracing-server-cluster-ip-service; do echo waiting for easy-shop-tracing-server; sleep 2; done']
+        - name: init-easy-shop-kafka
+          image: coodle/easy-shop-order-service-k8s
+          # Run a command in a shell
+          command: ['sh', '-c', 'until getent hosts easy-shop-kafka-cluster-ip-service; do echo waiting for easy-shop-kafka; sleep 2; done']
+        - name: init-easy-shop-auth-server
+          image: coodle/easy-shop-order-service-k8s
+          # Run a command in a shell
+          command: ['sh', '-c', 'until getent hosts easy-shop-auth-server-cluster-ip-service; do echo waiting for easy-shop-auth-server; sleep 2; done']

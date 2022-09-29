@@ -1,31 +1,55 @@
 # Version of the configuration.
-apiVersion: skaffold/v2beta29 latest
+apiVersion: skaffold/v2beta29
 # Always Config
 kind: Config
 # Describes how images are built
 build:
   # Images you're going to be building
   artifacts:
-    - image:
+    # Name of the image to be built
+    - image: coodle/easy-shop-order-service-k8s
       # Directory containing the artifact's sources
       # context: .
       context: easy-shop-order-service
-      # Describes an artifact built from a Dockerfile
-      docker:
-        # Locates the Dockerfile relative to workspace
-        dockerfile: Dockerfile
-      # inject updated files into the easy-shop-order-service pod, relay on
-      # app to automatically update itself
-      #----------------------------------------------------------------------------------------------------------------
-      # Local files synced to pods instead of triggering an image build when modified.
-      # If no files are listed, sync all the files and infer the destination.
-      sync:
+      # Builds images using the Jib plugins for Maven
+      jib: {}
 
-
-  # Describes how to do a build on the local docker daemon
-  # and optionally push to a repository.
-  local:
-    # should images be pushed to a registry.
-    # If not specified, images are pushed only
-    # if the current Kubernetes context connects to a remote cluster.
-    push: false
+# Describes how images are deployed
+deploy:
+  # Note: We can use Helm or Kustomize instead of kubectl
+  # Uses a client side kubectl apply to deploy manifests
+  kubectl:
+    # Kubernetes yaml or json manifests
+    manifests:
+      # Infra
+      - k8s/infra/db/easy-shop-auth-db/*.yaml
+      - k8s/infra/db/easy-shop-customer-db/*.yaml
+      - k8s/infra/db/easy-shop-inventory-db/*.yaml
+      - k8s/infra/db/easy-shop-order-db/*.yaml
+      - k8s/infra/easy-shop-tracing-server/*.yaml
+      - k8s/infra/easy-shop-zookeeper/*.yaml
+      - k8s/infra/easy-shop-kafka/*.yaml
+      - k8s/infra/easy-shop-ingress/*.yaml
+      # Micro-services
+      - k8s/services/easy-shop-auth-server/*.yaml
+      - k8s/services/easy-shop-customer-service/*.yaml
+      - k8s/services/easy-shop-inventory-service/*.yaml
+      - k8s/services/easy-shop-order-service/*.yaml
+# Can override be used to build, test or deploy configuration
+profiles:
+  # Local cluster - we build and deploy things locally
+  - name: local
+    # Criteria by which a profile can be auto-activated.
+    # The profile is auto-activated if any one of the activations are triggered.
+    # An activation is triggered if all of the criteria (env, kubeContext, command) are triggered.
+    activation:
+      # Kubernetes context that Skaffold should deploy to
+      - kubeContext: docker-desktop
+    build:
+      # Describes how to do a build on the local docker daemon
+      # and optionally push to a repository.
+      local:
+        # should images be pushed to a registry.
+        # If not specified, images are pushed only
+        # if the current Kubernetes context connects to a remote cluster.
+        push: false

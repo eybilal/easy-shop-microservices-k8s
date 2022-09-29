@@ -1,0 +1,67 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: easy-shop-inventory-service-config-map
+data:
+  application.yml: |-
+    spring:
+      datasource:
+        url: jdbc:postgresql://easy-shop-inventory-db-cluster-ip-service:5432/inventory-db
+        username: coodle
+        password: c00dl3
+        driver-class-name: org.postgresql.Driver
+      #-------------------------- ZipKin -------------------------------
+      zipkin:
+        base-url: http://easy-shop-tracing-server-cluster-ip-service:9411/
+        sender:
+          # Ways of sending information (spans) to Zipkin (web=send spans over http)
+          type: web  
+        sleuth:
+          sampler:
+            # How much information will be sent (1 means 100%)
+            probability: 1
+      #------------------------- JPA / HIBERNATE -------------------------
+      jpa:
+        # Log JPA queries
+        show-sql: true
+        properties:
+          hibernate:
+            # Allow Hibernate to generate SQL optimized for a particular DBMS
+            dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        hibernate:
+          # Hibernate ddl auto (create, create-drop, update)
+          ddl-auto: create-drop
+          # Naming strategy
+          #naming:
+            #implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+            #physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      #------------------------- Broker kafka -------------------------
+      kafka:
+        bootstrap-servers: easy-shop-kafka-cluster-ip-service:9092
+      cloud:
+        # Consumers function names
+        function:
+          definition: validateOrderRequestConsumer;allocateOrderRequestConsumer
+        # Bind consumers function names to kafka topics
+        stream:
+          bindings:
+            validateOrderRequestConsumer-in-0:
+              destination: validate_order_request
+            allocateOrderRequestConsumer-in-0:
+              destination: allocate_order_request
+    #------------------------- Logging -------------------------
+    # Log4j logging level order: Trace < Debug < Info < Warn < Error < Fatal
+    logging:
+      level:
+        org:
+          springframework:
+            security: debug
+        io:
+          coodle: debug
+    #------------------------- Actuator -------------------------
+    # Expose all
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: '*'

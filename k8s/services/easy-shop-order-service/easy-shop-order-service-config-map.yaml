@@ -1,18 +1,18 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: easy-shop-inventory-service-config-map
+  name: easy-shop-order-service-config-map
 data:
   application.yml: |-
     spring:
       datasource:
-        url: jdbc:postgresql://easy-shop-inventory-db-cluster-ip-service:5432/inventory-db
+        url: jdbc:postgresql://easy-shop-order-db-cluster-ip-service:5432/order-db
         username: coodle
         password: c00dl3
         driver-class-name: org.postgresql.Driver
       #-------------------------- ZipKin -------------------------------
       zipkin:
-        base-url: http://easy-shop-tracing-service-cluster-ip-service:9411/
+        base-url: http://easy-shop-tracing-server-cluster-ip-service:9411/
         sender:
           # Ways of sending information (spans) to Zipkin (web=send spans over http)
           type: web  
@@ -38,12 +38,17 @@ data:
       #------------------------- Broker kafka -------------------------
       kafka:
         bootstrap-servers: easy-shop-kafka-cluster-ip-service:9092
-      # kafka topic
       cloud:
+        # Consumers function names
+        function:
+          definition: validateOrderResponseConsumer;allocateOrderResponseConsumer
+        # Bind consumers function names to kafka topics
         stream:
           bindings:
-            orderConsumer-in-0:
-              destination: orders
+            validateOrderResponseConsumer-in-0:
+              destination: validate_order_response
+            allocateOrderResponseConsumer-in-0:
+              destination: allocate_order_response
     #------------------------- Logging -------------------------
     # Log4j logging level order: Trace < Debug < Info < Warn < Error < Fatal
     logging:

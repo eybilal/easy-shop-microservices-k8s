@@ -63,3 +63,8 @@ spec:
                 configMapKeyRef:
                   name: easy-shop-kafka-config-map
                   key: kafka-transaction-state-log-replication-factor
+      initContainers:
+        - name: init-easy-shop-kafka
+          image: confluentinc/cp-kafka
+          # Run a command in a shell
+          command: [ 'sh', '-c', 'until getent hosts easy-shop-zookeeper-cluster-ip-service; do echo waiting for easy-shop-zookeeper; sleep 2; done' ]

@@ -9,7 +9,7 @@ import java.util.Collection;
 
 @FeignClient(
     name = "inventory-service",
-    url = "${easy-shop-clients.inventory.url}/api/v1"
+    url = "easy-shop-inventory-service-cluster-ip-service:8086/api/v1"
 )
 public interface InventoryServiceClient {
     @GetMapping(value = "/products/{id}")
