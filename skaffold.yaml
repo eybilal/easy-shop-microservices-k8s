@@ -6,10 +6,15 @@ kind: Config
 build:
   # Images you're going to be building
   artifacts:
-    # Name of the image to be built
+    # easy-shop-inventory-service
+    - image: coodle/easy-shop-inventory-service-k8s
+      # Directory containing the artifact's sources
+      context: easy-shop-inventory-service
+      # Builds images using the Jib plugins for Maven
+      jib: { }
+    # easy-shop-order-service
     - image: coodle/easy-shop-order-service-k8s
       # Directory containing the artifact's sources
-      # context: .
       context: easy-shop-order-service
       # Builds images using the Jib plugins for Maven
       jib: {}
